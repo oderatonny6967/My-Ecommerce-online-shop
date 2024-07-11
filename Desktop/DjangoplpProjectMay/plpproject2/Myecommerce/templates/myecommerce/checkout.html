@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myecommerce/styles.css' %}">
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div>
+        {% for item in cart_items %}
+        <div>
+            <p>{{ item.product.name }} ({{ item.quantity }}) - ${{ item.product.price * item.quantity }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <p>Total: ${{ total }}</p>
+    <a href="{% url 'checkout' %}">Proceed to Checkout</a>
+</body>
+</html>

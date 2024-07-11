@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myecommerce/styles.css' %}">
+</head>
+<body>
+    <h1>Welcome to the Shop</h1>
+    <a href="{% url 'cart' %}">Cart</a> | <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
+    <div>
+        {% for product in products %}
+        <div>
+            <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+            <p>{{ product.price }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
