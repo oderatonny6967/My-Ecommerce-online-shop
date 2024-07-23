@@ -8,15 +8,55 @@
     <link rel="stylesheet" href="{% static 'myecommerce/styles.css' %}">
 </head>
 <body>
-    <h1>Welcome to the Shop</h1>
-    <a href="{% url 'cart' %}">Cart</a> | <a href="{% url 'login' %}">Login</a> | <a href="{% url 'register' %}">Register</a>
-    <div>
-        {% for product in products %}
-        <div>
-            <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
-            <p>{{ product.price }}</p>
-        </div>
+    <header class="header">
+        <h1>Welcome to the Shop</h1>
+    </header>
+    <nav class="navbar">
+        <a href="{% url 'cart' %}">Cart</a>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+    </nav>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
         {% endfor %}
     </div>
+{% endif %}
+
+<!-- Greet the user by name -->
+{% if user.is_authenticated %}
+    <h1>Hi {{ user.username }}!</h1>
+{% else %}
+    <h1>Hi Guest!</h1>
+{% endif %}
+    <div class="container">
+        <h2>Our Products</h2>
+        <div class="product-list">
+            {% for product in products %}
+            <div class="card product-card">
+                <a href="{% url 'product_detail' product.id %}">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                </a>
+                <p>${{ product.price }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 My E-commerce Site</p>
+    </footer>
+    <script>
+        // Hide the messages after 5 seconds
+        setTimeout(function() {
+            var messages = document.querySelector('.messages');
+            if (messages) {
+                messages.style.display = 'none';
+            }
+        }, 5000); // 5000 milliseconds = 5 seconds
+    </script>
 </body>
 </html>

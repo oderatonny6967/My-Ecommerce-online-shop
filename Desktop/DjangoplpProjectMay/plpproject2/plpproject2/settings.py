@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+#AUTH_USER_MODEL = 'users.CustomUser'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,14 +45,44 @@ INSTALLED_APPS = [
 ]
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/Myecommerce/login/'
 LOGOUT_URL = '/logout/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/Myecommerce/'
+LOGOUT_REDIRECT_URL = '/Myecommerce/'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'favicon_404_ignore': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda record: record.request.path != '/favicon.ico',
+        },
+    },
+}
+
 
 
 MIDDLEWARE = [
@@ -59,6 +90,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+     'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -70,7 +102,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-             os.path.join(BASE_DIR, 'templates'),
+             os.path.join(BASE_DIR, 'templates/myecommerce'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -135,11 +167,27 @@ USE_TZ = True
 # settings.py
 
 # Static files (CSS, JavaScript, Images)
+
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Ensure your static files are in the correct directories
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    BASE_DIR / "Myecommerce" / "static",
 ]
+
+# STATIC_ROOT is used for collecting static files in a single directory for production
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+#STATIC_URL = '/static/'
+#STATIC_ROOT = BASE_DIR / "staticfiles"
+
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#STATICFILES_DIRS = [
+   # BASE_DIR / "static",
+   # BASE_DIR / "myecommerce" / "static",
+#]
 
 
 # Default primary key field type
