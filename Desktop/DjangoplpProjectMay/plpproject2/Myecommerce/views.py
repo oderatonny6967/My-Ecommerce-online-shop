@@ -6,10 +6,20 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, CheckoutForm
 from .models import Product, Order, Cart, Review
 from django.contrib import messages
+from django.db.models import Q
 
 def index(request):
     products = Product.objects.all()
     return render(request, 'Myecommerce/index.html', {'products': products})
+
+def index2(request):
+    products = Product.objects.all()
+    return render(request, 'Myecommerce/index2.html', {'products': products})
+    
+def product_search(request):
+    query = request.GET.get('q')
+    products = Product.objects.filter(Q(name__icontains=query) | Q(description__icontains=query))
+    return render(request, 'Myecommerce/index.html', {'products': products, 'search_query': query})
 
 def register(request):
     if request.method == 'POST':
@@ -34,13 +44,13 @@ def user_login(request):
             user = form.get_user()
             login(request, user)
             messages.success(request, f'Login successful. Welcome, {user.username}!')
-            next_url = request.POST.get('next', 'index')  # Default to 'index' if 'next' is not provided
+            next_url = request.POST.get('next', 'index2')  # Default to 'index' if 'next' is not provided
             return redirect(next_url)
         else:
             return render(request, 'Myecommerce/login.html', {'form': form, 'error_message': 'Invalid login details'})
     else:
         form = AuthenticationForm()
-        next_url = request.GET.get('next', 'index')
+        next_url = request.GET.get('next', 'index2')
         return render(request, 'Myecommerce/login.html', {'form': form, 'next': next_url})
 
 
