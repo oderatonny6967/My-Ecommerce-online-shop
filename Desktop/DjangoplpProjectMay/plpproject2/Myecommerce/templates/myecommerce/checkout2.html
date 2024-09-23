@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myecommerce/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+    </header>
+    <main>
+        <h2>Select Payment Method</h2>
+        <form action="{% url 'checkout' %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <input type="button" id="mpesa" name="payment_method" value="mpesa">
+                <button type="submit" class="btn">Mpesa</button>
+            </div>
+            <div>
+                <input type="button" id="visa" name="payment_method" value="visa">
+                <button type="submit" class="btn">Visa</button>
+            </div>
+            <div>
+                <input type="button" id="paypal" name="payment_method" value="paypal">
+                <button type="submit" class="btn">PayPal</button>
+            </div>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2024 My E-commerce Site</p>
+    </footer>
+</body>
+</html>

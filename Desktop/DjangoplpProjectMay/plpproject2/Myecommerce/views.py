@@ -70,7 +70,7 @@ def checkout(request):
             return redirect('order_history')
     else:
         form = CheckoutForm()
-    return render(request, 'Myecommerce/checkout.html', {'cart_items': cart_items, 'total': total, 'form': form})
+    return render(request, 'Myecommerce/checkout2.html', {'cart_items': cart_items, 'total': total, 'form': form})
 
 @login_required
 def order_history(request):
@@ -99,3 +99,30 @@ def product_detail(request, product_id):
     product = Product.objects.get(id=product_id)
     reviews = Review.objects.filter(product=product)
     return render(request, 'Myecommerce/product_detail.html', {'product': product, 'reviews': reviews})
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
+# Checkout page view
+def checkout2(request):
+    if request.method == 'POST':
+        payment_method = request.POST.get('payment_method')
+        if payment_method == 'mpesa':
+            return redirect(reverse('mpesa_payment'))
+        elif payment_method == 'visa':
+            return redirect(reverse('visa_payment'))
+        else:
+            return redirect(reverse('paypal_payment'))
+    return render(request, 'checkout.html')
+
+# Add payment gateway views for Mpesa, Visa, and PayPal.
+def mpesa_payment(request):
+    # Implement Mpesa payment integration here
+    return render(request, 'payment/mpesa_payment.html')
+
+def visa_payment(request):
+    # Implement Visa payment integration here
+    return render(request, 'payment/visa_payment.html')
+
+def paypal_payment(request):
+    # Implement PayPal payment integration here
+    return render(request, 'payment/paypal_payment.html')
